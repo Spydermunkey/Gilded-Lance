@@ -2,7 +2,7 @@
 using System.Collections;
 
 
-public class PlayerCamera : MonoBehaviour
+public class Camera : MonoBehaviour
 {
     public Vector2 lookSensitivity = new Vector2(5, 5);
 	//my nipples have titties that are red bottom with green tops

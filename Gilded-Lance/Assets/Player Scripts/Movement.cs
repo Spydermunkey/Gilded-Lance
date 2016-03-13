@@ -8,7 +8,7 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
-        transform.position += (transform.forward * Input.GetAxis("Zed")) * speed;
-        transform.position += (transform.right * Input.GetAxis("Ecks")) * speed;
+        transform.position += (transform.forward * Input.GetAxis("Vertical")) * speed;
+        transform.position += (transform.right * Input.GetAxis("Horizontal")) * speed;
     }
 }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerBehaviour : MonoBehaviour
+public class GeneralBehaviour : MonoBehaviour
 {
     public Vector2 lookSensitivity = new Vector2(5, 5);
 
@@ -23,8 +23,8 @@ public class PlayerBehaviour : MonoBehaviour
 
         storage.x = Mathf.Clamp(storage.x, -70, 70);
 
-        transform.position += (transform.forward * Input.GetAxis("Zed")) * .25F;
-        transform.position += (transform.right * Input.GetAxis("Ecks")) * .25F;
+        transform.position += (transform.forward * Input.GetAxis("Vertical")) * .25F;
+        transform.position += (transform.right * Input.GetAxis("Horizontal")) * .25F;
 
         player.rotation = Quaternion.Euler(0, storage.y, 0);
         pcam.localRotation = Quaternion.Euler(storage.x, 0, 0);
