@@ -7,25 +7,35 @@ public class GeneralBehaviour : MonoBehaviour
 
     private Transform pcam;
     private Transform player;
-    private Vector3 storage = new Vector3(0, 0, 0);
+    private Vector2 storage;
 
+    //new vars
+    private Rigidbody rigid;
+    private float jumpTimer;
+    private float conductor;
+    public Vector3 jump = new Vector3(0, 5, 0); 
 
     void Start()
     {
         player = this.transform;
         pcam = player.GetChild(0);
+        rigid = player.GetComponent<Rigidbody>();
     }
 
-    void Update()
-    {
-        storage.x -= Input.GetAxis("Mouse Y") * lookSensitivity.y;
-        storage.y += Input.GetAxis("Mouse X") * lookSensitivity.x;
+    void Update(){
+        conductor = Time.smoothDeltaTime;
+        jumpTimer -= conductor;
+        storage = new Vector2(Mathf.Clamp(storage.x - Input.GetAxis("Mouse Y") * lookSensitivity.y * conductor, -95, 85) // upper limit bounded by min value, lower limit bounded by max value
+                                        , storage.y + Input.GetAxis("Mouse X") * lookSensitivity.x * conductor);
 
-        storage.x = Mathf.Clamp(storage.x, -70, 70);
+        player.position += (player.forward * Input.GetAxis("Vertical")) / 4;
+        player.position += (player.right * Input.GetAxis("Horizontal")) / 4;
 
-        transform.position += (transform.forward * Input.GetAxis("Vertical")) * .25F;
-        transform.position += (transform.right * Input.GetAxis("Horizontal")) * .25F;
-
+        if (Input.GetButtonDown("Jump") && jumpTimer < 0 ) { 
+        
+            rigid.velocity += jump;
+            jumpTimer = 2;
+        }
         player.rotation = Quaternion.Euler(0, storage.y, 0);
         pcam.localRotation = Quaternion.Euler(storage.x, 0, 0);
     }
