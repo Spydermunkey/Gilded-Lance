@@ -4,16 +4,22 @@ using System.Collections;
 public class GeneralBehaviour : MonoBehaviour
 {
     public Vector2 lookSensitivity = new Vector2(5, 5);
-    public bool useController = true;
 
     private Transform pcam;
     private Transform player;
     private Vector2 storage;
-    public float speed = 4;
+    // rip speed :(
 
-    //new vars
+    //rip Use controller :(
+    // new vars 
+    private Transform cursorCube;
+    //use debug inspector to view
+    private bool grounded;
+    private Vector3 refVec;
+    private Transform playerBlock;
+
     private Rigidbody rigid;
-    private float jumpTimer;
+    //rip jumptimer :(
     private float conductor;
     public Vector3 jump = new Vector3(0, 5, 0); 
 
@@ -21,32 +27,29 @@ public class GeneralBehaviour : MonoBehaviour
         player = this.transform;
         pcam = player.GetChild(0);
         rigid = player.GetComponent<Rigidbody>();
+        cursorCube = player.GetChild(1);
+        playerBlock = player.GetChild(2);
+        playerBlock.SetParent(null);
     }
 
     void Update() {
         conductor = Time.smoothDeltaTime;
-        jumpTimer -= conductor;
 
-        if (Input.GetButtonDown("Run"))
-            speed = 3;
-        else if (Input.GetButtonUp("Run"))
-            speed = 4;
+        RaycastHit hit;
+        if (Physics.Raycast(pcam.position, pcam.forward, out hit)){
 
-        storage = new Vector2(Mathf.Clamp(storage.x - ((useController) ? Input.GetAxis("Axis Y") : Input.GetAxis("Mouse Y")) * lookSensitivity.y * conductor, -65, 75) // upper limit bounded by min value, lower limit bounded by max value
-                                        , storage.y + ((useController) ? Input.GetAxis("Axis X") : Input.GetAxis("Mouse X")) * lookSensitivity.x * conductor);
-
-        player.position += (player.forward * Input.GetAxis("Vertical")) / speed;
-        player.position += (player.right * Input.GetAxis("Horizontal")) / speed;
-
-        if (Input.GetButtonDown("Jump") && jumpTimer < 0 ) { 
-        
-            rigid.velocity += jump;
-            jumpTimer = 2;
+            cursorCube.position = Vector3.SmoothDamp(cursorCube.position, new Vector3(hit.point.x, hit.point.y + 1, hit.point.z), ref refVec, 0.1f);
         }
 
-        
+        if (Input.GetButtonDown("Fire1"))
+            player.position = cursorCube.position;
+        if (Input.GetButtonDown("Fire2"))
+            playerBlock.position = cursorCube.position;
+        storage = new Vector2(Mathf.Clamp(storage.x - Input.GetAxis("Mouse Y") * lookSensitivity.y * conductor, -95, 85)
+                                        , storage.y + Input.GetAxis("Mouse X") * lookSensitivity.x * conductor);
 
         player.rotation = Quaternion.Euler(0, storage.y, 0);
         pcam.localRotation = Quaternion.Euler(storage.x, 0, 0);
     }
+
 }

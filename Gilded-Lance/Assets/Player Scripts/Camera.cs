@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using System;
 
 public class Camera : MonoBehaviour
 {
@@ -24,5 +24,10 @@ public class Camera : MonoBehaviour
 
         player.rotation = Quaternion.Euler(0, storage.y, 0);
         pcam.localRotation = Quaternion.Euler(storage.x, 0, 0);
+    }
+
+    internal Ray ScreenPointToRay(Vector3 mousePosition)
+    {
+        throw new NotImplementedException();
     }
 }
