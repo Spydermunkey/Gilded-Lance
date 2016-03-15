@@ -41,10 +41,13 @@ public class GeneralBehaviour : MonoBehaviour
             cursorCube.position = Vector3.SmoothDamp(cursorCube.position, new Vector3(hit.point.x, hit.point.y + 1, hit.point.z), ref refVec, 0.1f);
         }
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1")){
             player.position = cursorCube.position;
+            rigid.velocity = Vector3.zero;
+        }
         if (Input.GetButtonDown("Fire2"))
             playerBlock.position = cursorCube.position;
+
         storage = new Vector2(Mathf.Clamp(storage.x - Input.GetAxis("Mouse Y") * lookSensitivity.y * conductor, -95, 85)
                                         , storage.y + Input.GetAxis("Mouse X") * lookSensitivity.x * conductor);
 
