@@ -13,6 +13,9 @@ public class GeneralBehaviour : MonoBehaviour
     //rip Use controller :(
     // new vars 
     private Transform cursorCube;
+    private Vector3 posKeeper;
+    private Vector3 otherRefVec;
+    private float t = 0.1f;
     //use debug inspector to view
     private bool grounded;
     private Vector3 refVec;
@@ -30,6 +33,7 @@ public class GeneralBehaviour : MonoBehaviour
         cursorCube = player.GetChild(1);
         playerBlock = player.GetChild(2);
         playerBlock.SetParent(null);
+        
     }
 
     void Update() {
@@ -42,12 +46,30 @@ public class GeneralBehaviour : MonoBehaviour
         }
 
         if (Input.GetButtonDown("Fire1")){
-            player.position = cursorCube.position;
-            rigid.velocity = Vector3.zero;
+            posKeeper = cursorCube.position;
+            rigid.useGravity = false;
         }
         if (Input.GetButtonDown("Fire2"))
             playerBlock.position = cursorCube.position;
+        if (Input.GetButtonDown("Fire3"))
+        {
+            posKeeper = -pcam.forward * 5;
+            rigid.useGravity = false;
+        }
+        if (posKeeper != Vector3.zero) {
 
+            player.position = Vector3.SmoothDamp(player.position, posKeeper, ref otherRefVec, 0.1f);
+            t -= conductor;
+            if (t < 0) {
+
+                posKeeper = Vector3.zero;
+                rigid.useGravity = true;
+                rigid.velocity = posKeeper;
+                t = 0.1f;
+            }
+
+        }
+        Debug.DrawRay(pcam.position, -pcam.forward, Color.green);
         storage = new Vector2(Mathf.Clamp(storage.x - Input.GetAxis("Mouse Y") * lookSensitivity.y * conductor, -95, 85)
                                         , storage.y + Input.GetAxis("Mouse X") * lookSensitivity.x * conductor);
 
