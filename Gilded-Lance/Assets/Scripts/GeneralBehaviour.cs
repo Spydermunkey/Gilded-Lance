@@ -34,8 +34,10 @@ public class GeneralBehaviour : MonoBehaviour
         rigid = player.GetComponent<Rigidbody>();
         cursorCube = player.GetChild(1);
         playerBlock = player.GetChild(2);
-        playerBlock.SetParent(null);
+        player.DetachChildren();
+        pcam.parent = player;
         trans = playerBlock.GetChild(0);
+        
     }
 
     void Update() {
@@ -58,7 +60,7 @@ public class GeneralBehaviour : MonoBehaviour
             playerBlock.LookAt(player);
         }
         if (Input.GetButtonDown("Fire3"))
-            trans.gameObject.SetActive(!playerBlock.GetChild(0).gameObject.activeSelf);
+            trans.GetComponent<Camera>().enabled = !trans.GetComponent<Camera>().enabled;
 
         if (Input.GetAxis("Mouse ScrollWheel") != 0) {
 
