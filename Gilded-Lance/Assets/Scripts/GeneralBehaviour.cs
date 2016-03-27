@@ -5,24 +5,25 @@ public class GeneralBehaviour : MonoBehaviour
 {
     public Vector2 lookSensitivity = new Vector2(5, 5);
 
+    private Vector3 otherRefVec;
+    private Vector3 refVec;
+    private Vector3 posKeeper;
+    private Vector2 storage;
+      
+    private Transform cursorCube;
     private Transform pcam;
     private Transform player;
-    private Vector2 storage;
-  
-    private Transform cursorCube;
-    private Vector3 posKeeper;
-    private Vector3 otherRefVec;
+    private Transform playerBlock;
+    private Transform trans;
+
+    private float conductor;
+    private float coolTime;
     private float t = 0.2f;
 
-    private Vector3 refVec;
-    private Transform playerBlock;
-    private float coolTime;
-    private Transform trans;
+    private Camera cam;
     private Camera overWatch;
 
     private Rigidbody rigid;
-    private float conductor;
-    private Camera cam;
 
     void Start() {
         player = this.transform;
@@ -64,9 +65,9 @@ public class GeneralBehaviour : MonoBehaviour
            cam.enabled = !cam.enabled;
         }
         else if (Input.GetAxisRaw("Mouse ScrollWheel") != 0) {
-            Debug.Log("The Scroll doth wheel!");
+       
             if(cam == trans.GetComponent<Camera>()) {
-                Debug.Log("Sucess?");
+          
                 cam.depth = -1;
                 cam.enabled = false;
                 cam = overWatch;
@@ -75,7 +76,7 @@ public class GeneralBehaviour : MonoBehaviour
             }
             else if (cam == overWatch)
             {
-                Debug.Log("Another Sucess?");
+        
                 cam.depth = -1;
                 cam.enabled = false;
                 cam = trans.GetComponent<Camera>();
@@ -97,9 +98,7 @@ public class GeneralBehaviour : MonoBehaviour
                 t = 0.2f;
             }
       
-
         }
-
         storage = new Vector2(Mathf.Clamp(storage.x - Input.GetAxis("Mouse Y") * lookSensitivity.y * conductor, -95, 85)
                                         , storage.y + Input.GetAxis("Mouse X") * lookSensitivity.x * conductor);
 
