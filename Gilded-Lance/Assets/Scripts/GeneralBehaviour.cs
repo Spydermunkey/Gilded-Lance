@@ -85,7 +85,7 @@ public class GeneralBehaviour : MonoBehaviour
             }
 
         }
-
+        
         if (posKeeper != Vector3.zero) {
 
             player.position = Vector3.SmoothDamp(player.position, posKeeper, ref otherRefVec, 0.1f);
@@ -95,7 +95,7 @@ public class GeneralBehaviour : MonoBehaviour
                 posKeeper = Vector3.zero;
                 rigid.useGravity = true;
                 rigid.velocity = posKeeper;
-                t = 0.2f;
+                t = 0.3f;
             }
       
         }
