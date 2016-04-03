@@ -26,6 +26,7 @@ public class GeneralBehaviour : MonoBehaviour
     private Rigidbody rigid;
 
     void Start() {
+        
         player = this.transform;
         pcam = player.GetChild(0);
         rigid = player.GetComponent<Rigidbody>();
@@ -36,6 +37,7 @@ public class GeneralBehaviour : MonoBehaviour
         pcam.parent = player;
         overWatch.transform.parent = player;
         cam = trans.GetComponent<Camera>();
+        
         
     }
 
